@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+    {% extends 'base.html' %}
+
+<body>
+
+    {% block content %}   
+        {% include "tables.html" with TableName="DimContract" Columns=DimContract.Columns Rows=DimContract.Rows %}
+    {% endblock %}
+</body>
+</html>

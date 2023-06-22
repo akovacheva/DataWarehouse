@@ -1,0 +1,99 @@
+
+<div class="container">
+
+    <div class="container custom-div" id="div-1">
+
+    
+        <h2> {{ target_table.name }} </h2>
+
+        <table id="paginated_target" class="table table table-hover table-responsive">
+    
+            <thead style="background-color: #e3f2fd;">
+                <tr>
+                    {% for column in target_table.columns %}
+                        <th scope="col">{{ column }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                    <!-- {% for row in target_table.rows %}
+                        <tr>
+                            {% for entry in row %}
+                                <td>{{ entry }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %} -->
+                </tbody>
+            </table>
+</div>
+
+
+<!-- <div class="container custom-div" id="div-1">
+
+
+    <h2> {{ target_table.name }} </h2>
+    <table id="paginated_target" class="table table table-hover table-responsive">
+        <thead>
+            <tr>
+                {% for column in target_table.columns %}
+                    <th scope="col">{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+
+        </tbody>
+      </table>
+</div> -->
+
+
+
+
+{% for name, source_table in source_tables.items %}
+    {% with table_index=forloop.counter|add:1 %}
+        <div class="container custom-div" id="div-{{ table_index }}">
+            <h2>{{ name }}</h2>
+
+            <script>
+
+                $(document).ready(function () {
+                    $('#paginated_{{name}}').DataTable
+                    ({
+                      processing: true,
+                      serverSide: true,
+                      ajax: '/etl_web/datable/{{name}}',
+                    }); 
+                });
+          
+            </script>
+
+            <table id="paginated_{{name}}" class="table table-hover table-responsive">
+                <thead style="background-color: #e3f2fd;">
+                    <tr>
+                        {% for column in source_table.columns %}
+                            <th scope="col">{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- {% for row in source_table.rows %}
+                        <tr>
+                            {% for entry in row %}
+                                <td>{{ entry }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %} -->
+                </tbody>
+            </table>
+        </div>
+    {% endwith %}
+{% endfor %}
+
+
+</div>
+
+<div class="content">
+    {% block content %}
+    
+    {% endblock %}
+</div>

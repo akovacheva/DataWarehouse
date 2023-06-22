@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+    {% extends 'base.html' %}
+
+<body>
+
+    {% block content %}   
+    {% include "tables.html" with TableName="DimParty" Columns=DimParty.Columns Rows=DimParty.Rows %}
+    {% endblock %}
+
+</body>
+</html>

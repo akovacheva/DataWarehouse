@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+    {% extends 'base.html' %}
+
+<body>
+
+    {% block content %}   
+        {% include "tables.html" with TableName="FactContract" Columns=FactContract.Columns Rows=FactContract.Rows %}
+    {% endblock %}
+</body>
+</html>

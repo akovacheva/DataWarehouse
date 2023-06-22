@@ -1,0 +1,127 @@
+{% load static %}
+
+<!DOCTYPE html>
+<!-- base.html -->
+<html>
+<head>
+    <title>{% block title %}My Website{% endblock %}</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+    
+  
+
+    <title>User Data</title>
+
+    <script>
+      $(document).ready(function() {
+        $("input[type='checkbox']").change(function() {
+          var checkboxId = $(this).attr("id");
+          var divId = checkboxId.replace("checkbox-", "div-");
+          $("#" + divId).toggle(this.checked);
+        });
+      });
+
+        $(document).ready(function () {
+            $('#paginated_target').DataTable
+            ({
+              processing: true,
+              serverSide: true,
+              ajax: '/etl_web/datable/{{target_table.name}}',
+            }); 
+        });
+
+    </script>
+
+    <style>
+            .custom-div {
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    .pagination .page-link {
+        color: black;
+    }
+    
+    .pagination .page-item.active .page-link {
+        color: white;
+        background-color: #392F5A;
+    }
+    </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="{% static 'logo.png' %}" width="200" height="100">
+       </a>
+
+
+        <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-6">
+
+                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                    <input type="checkbox" class="btn-check" id="checkbox-1" autocomplete="off" checked>
+                    <label class="btn" for="checkbox-1" style="outline-color: invert;">{{ target_table.name }}</label>
+
+                    {% for name, source_table in source_tables.items %}
+                    {% with table_index=forloop.counter|add:1 %}
+                
+                    <input type="checkbox" class="btn-check" id="checkbox-{{ table_index }}" autocomplete="off" checked>
+                    <label class="btn"style="outline-color: invert;" for="checkbox-{{ table_index }}">{{ name }}</label>
+
+                    {% endwith %}
+                    {% endfor %}
+                
+                </div>
+            </div>
+        </div>
+      </div>
+
+
+      <div class="dropdown">
+        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="true">
+            {{ target_table.name }}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {% if target_table.name != 'DimParty' %}
+                <li><a class="dropdown-item" href="{% url 'table' 'DimParty' %}">DimParty</a></li>
+            {% endif %}
+            {% if target_table.name != 'DimContract' %}
+                <li><a class="dropdown-item" href="{% url 'table' 'DimContract' %}">DimContract</a></li>
+            {% endif %}
+            {% if target_table.name != 'FactContract' %}
+            <li><a class="dropdown-item" href="{% url 'table' 'FactContract' %}">FactContract</a></li>
+        {% endif %}
+        </ul>
+    </div>
+    
+
+      </div>
+  </nav>
+
+ 
+
+    <div class="content">
+        {% block content %}
+        
+        {% endblock %}
+    </div>
+
+    <footer style="background-color: #e3f2fd;">
+      <div class="container-fluid">
+          <div class="row">
+            <img src="https://www.quipu.de/wp-content/themes/quipu/i/footer_line.png" q="height=100"/>
+              <div class="col-12 text-center">
+                  <p>&copy; 2023 Ana Kovacheva. All rights reserved.</p>
+              </div>
+          </div>
+      </div>
+  </footer>
+
+</body>
+</html>
