@@ -1,9 +1,5 @@
 # DataWarehouse
 
-# infoware-internship
-
-A repository to hold utility code and examples for the Quipu Infoware Internship programme.
-
 ## Goal
 
 Create a solution that will show data from several source and target tables and allow the user to load data from source to target.
